@@ -1,0 +1,40 @@
+#Checks MAC address format
+#
+#Usage: see usage function bellow
+#
+
+usage()
+{
+  echo "Usage: ismac mac_address"
+  echo "Return 0 if its a valid and 1 if its invalid"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+f_ismac()
+{
+
+echo $1 | grep "^[A-Za-z0-9][A-Za-z0-9]:[A-Za-z0-9][A-Za-z0-9]:[A-Za-z0-9][A-Za-z0-9]:[A-Za-z0-9][A-Za-z0-9]:[A-Za-z0-9][A-Za-z0-9]:[A-Za-z0-9][A-Za-z0-9]$" > /dev/null
+
+if [ $? -eq 0  ]
+then
+
+echo 0
+exit 0
+
+else
+
+echo 1
+exit 1
+
+fi
+}
+
+f_ismac $1

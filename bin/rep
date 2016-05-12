@@ -1,0 +1,23 @@
+#Replaces words in a file
+#
+#See usage() for usage
+#
+usage()
+{
+  echo "Usage: rep filename word replaceword"
+  echo "Scans the 'filename' and replaces 'word' with 'replaceword'"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 3 ]
+then
+  usage
+  exit
+fi
+
+opt=$1
+filename=$2
+pattern=$3
+cat $1 |  sed -e "s/$2/$3/g"

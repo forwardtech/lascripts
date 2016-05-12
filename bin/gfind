@@ -1,0 +1,20 @@
+#Find files containing a pattern
+#
+#Usage: see usage function bellow
+#
+usage()
+{
+  echo "Usage: gfind pattern"
+  echo "List files containing a pattern recursively searching all subdirectories"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+find . -name "*" -exec grep $1 {} \; -print 2> /dev/null

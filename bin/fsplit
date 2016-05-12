@@ -1,0 +1,131 @@
+#Splits a file to multiple individual files
+#
+#See usage bellow
+#
+#NOTE: This is a beta version please report issues.
+
+usage()
+{
+  echo "Usage: fsplit -a|s|e|o filename pattern"
+  echo "Splits a file to multiple individual files - splitting where the pattern occurs"
+  echo "  -a pattern seen anywhere in the line"
+  echo "  -s pattern occurs at the start"
+  echo "  -e pattern occurs at the end"
+  echo "  -o only pattern in the line"
+  echo " NOTE: This is a beta version please report problems."
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 3 ]
+then
+  usage
+  exit
+fi
+
+opt=$1
+filename=$2
+pattern=$3
+
+if [ $opt = "-a" ]
+then
+  #with ${pattern} anywhere in the line
+  grep -n "${pattern}" $filename > patrn.$$
+elif [ $opt = "-s" ]
+then
+  #${pattern} at the start
+  grep -n "^${pattern}" $filename > patrn.$$
+elif [ $opt = "-e" ]
+then
+  #${pattern} at the end
+  grep -n "${pattern}$" $filename > patrn.$$
+elif [ $opt = "-o" ]
+then
+  #only ${pattern}
+  grep -n "^${pattern}$" $filename > patrn.$$
+else
+  usage
+  exit
+fi
+
+
+start=1
+fnum=0
+
+for lnum in `cat patrn.$$ | cut -d':' -f1`
+do 
+
+#current end line is a line before the next "pattern" line
+endl=`expr $lnum - 1`
+if [ $endl -lt $start ]
+then
+   #echo DEBUG endl less than start 
+   start=$endl
+fi
+#echo DEBUG endl is $endl start line is $start
+
+if [ $endl -gt 0 ]
+then
+  #grab the lines between the start and the end
+  sed -n $start,${endl}p $filename > tmp.$$
+else
+  #echo DEBUG endl is le 0  
+  touch tmp.$$
+fi
+
+#if header do special naming ?
+#if [ $start -eq 1 ]
+#then
+#additionalnames="TODO"
+#fi
+
+curfilename=`echo ${pattern}_${fnum}_SPL.txt`
+
+#if a file with the same name exists use 2
+#if [ -x $curfilename ]
+#then
+#curfilename=`echo ${pattern}_${fnum}_2_SPL.txt`
+#curfilename=`echo ${fname}2_${ip}_${logtime}_SPL.txt`
+#fi
+
+cp tmp.$$ $curfilename
+
+echo $curfilename done
+
+#next start
+start=$lnum
+
+#next file name
+fnum=`expr $fnum + 1`
+
+#execline=`sed -n ${lnum}p $filename`
+#DEBUG echo EXEC LINE $execline
+#echo EXEC LINE $execline
+
+done
+
+## LAST SET
+#for the last set get the file length and end it with that
+endl=`wc -l $filename | awk '{print $1}'`
+
+#grab the lines between the start and the end
+sed -n $start,${endl}p $filename > tmp.$$
+
+#curfilename=`echo ${fname}_${ip}_${logtime}_SPL.txt`
+curfilename=`echo ${pattern}_${fnum}_SPL.txt`
+
+cp tmp.$$ $curfilename
+echo $curfilename done
+
+rm patrn.$$ tmp.$$
+
+#size check
+orig_size=`wc -l $filename  | awk '{print $1}'`
+spl_size=`wc -l *${pattern}*_SPL.txt | tail -1 | awk '{print $1}'`
+if [ $orig_size -ne $spl_size ]
+then
+  echo "Original size and Split file size doesn't match. Possible error in splitting. orig size $orig_size split size $spl_size"
+fi
+
+echo DONE

@@ -1,0 +1,22 @@
+#Find duplicate log files and report them
+#
+#Usage: dups [directory_path]
+#Find duplicate files under the directory_path specified
+#uses current directory if there is no argument specified
+#
+#If you see $1 use it. Or else search from the current directory
+if [ $# -ge 1 ]
+then
+  find $1 -name "*" -exec cksum {} \;  2> /dev/null > /tmp/dup.$$
+else
+  find . -name "*" -exec cksum {} \;  2> /dev/null > /tmp/dup.$$
+fi
+
+cat /tmp/dup.$$ | awk '{print $1}' | sort | uniq -c | awk '{print $1" "$2}' | grep -v "^1 " > /tmp/dup.onlydup.$$
+for cks in `cat /tmp/dup.onlydup.$$ | awk '{print $2}'`
+#for cks in `cat /tmp/dup.$$ | awk '{print $1}' | sort | uniq -c | awk '{print $1" "$2}' | grep -v "^1 " | awk '{print $2}'`
+do
+grep $cks /tmp/dup.onlydup.$$ | awk '{print "::Found "$1" times!"}'
+#grep $cks /tmp/dup.onlydup.$$ 
+grep "$cks " /tmp/dup.$$
+done

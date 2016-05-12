@@ -1,0 +1,58 @@
+#Checks IP address format
+#
+#IP4 has 4 octets each containing numbers between 0-255. No octet can be empty
+#
+#Usage: See usage function bellow
+#
+
+usage()
+{
+  echo "Usage: isip4 ip4_address"
+  echo "Return 0 if its a valid and 1 if its invalid"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+f_isip4()
+{
+
+echo $1 | grep "^[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+$" > /dev/null
+
+if [ ! $? -eq 0  ]
+then
+  echo 1
+  exit 1
+fi
+
+#Check if each octet is between 0-255
+
+#Check if 4 "words" are present separated by .
+
+trd=`echo $1 | tr "." " "`
+
+# check if each word is a number between 0 and 255
+for octx in $trd
+do
+
+if [ $octx -ge 0 -a $octx -le 255 ]
+then 
+  continue 
+else
+  echo 1
+  exit 1
+fi
+
+done
+
+echo 0
+exit 0
+}
+
+f_isip4 $1

@@ -1,0 +1,29 @@
+asdfasdfa For Testing -e option sdfdsf (0 -> 2) (^ 0 -> 4)
+adsfasdfafd
+aadf adsfadsf patword adsfdsaf (1 -> 2)  (^ -> NILL)
+adfadsf
+patword  asedf - begins with a pattern  (2 -> 4) (^ 1 -> 4)
+aadf adsfadsf adsfdsaf patword
+dsfasfd
+af
+patword  asedf - begins with a pattern  (3 -> 2) (^ 2 -> 13)
+adsfasdfasdfadf
+aadf adsfadsf patword - pattern anywhere in the line adsfdsaf  (4 -> 8) (^  NILL)
+adsfadsf
+asdf
+adsfdsa
+fadsf
+adsfdsa
+fdsaf
+sadfadsfdsa
+aadf adsfadsf patword  -pattern anywhere adsfdsaf  (5 -> 3) (^ NILL)
+asd
+fasdf
+patword  lasda asedf - begins with a pattern  (6 -> 2) (^ 3 -> 8)
+asdf
+aadf adsfadsf patword adsfdsaf (7 -> 5) (^ NILL)
+adsfasf
+adsf
+adsfsad
+dsaf
+aadf adsfadsf patword adsfdsaf (8 -> 1) (^ NILL)

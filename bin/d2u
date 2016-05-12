@@ -1,0 +1,23 @@
+#Simple dos to unix script to use in 
+#systems which doesn't have dos2unix utility
+#
+#Usage: see usage function 
+#
+usage()
+{
+  echo "Usage: d2u filename"
+  echo "Converts dos format to unix format and *overwrites* the file"
+  echo "(Its a simple remove of ^M at the end of the line)"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+cat $1 |  sed -e 's///g' > $$.tmp
+mv $$.tmp $1

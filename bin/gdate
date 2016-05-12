@@ -1,0 +1,57 @@
+#List all the lines in a log file with the specified time stamp
+#
+#Note: This might need lots of customization based on the date format
+#      your system might be using.
+#
+#Usage: gdate file_name day month year hr min sec
+#List all the lines in a log files with the specified date and time
+#
+#eg. gdate first.txt 17 Dec 14 21 40
+#
+#
+#
+if [ $# -lt 7 ]
+then
+echo Usage: $gdate file_name day month year hr min sec
+echo eg. $date first.txt 17 Dec 2015 21 40
+exit 1
+fi
+
+day=$2
+
+n=0
+monthWord=NA
+for x in Jan Feb Mar Apr Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+do
+n=`expr $n + 1`
+
+if [ $x = $3 ]
+then
+monthWord=$x
+month=$n
+break
+fi
+
+done
+
+if [ $monthWord = "NA" ]
+then
+echo Error $3 not a valid month use Jan Feb Mar Apr Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+exit 1
+fi
+
+year=$4
+
+hr=$5
+
+min=$6
+
+sec=$7
+
+if [ $sec = "x" ]
+then
+sec=""
+fi
+
+##DEBUG echo egrep "$day/$monthWord/$year $hr:$min:$sec|$day/$month/$year $hr:$min:$sec|$monthWord/$day/$year $hr:$min:$sec|$month/$day/$year $hr:$min:$sec" $1
+     egrep "$day/$monthWord/$year $hr:$min:$sec|$day/$month/$year $hr:$min:$sec|$monthWord/$day/$year $hr:$min:$sec|$month/$day/$year $hr:$min:$sec" $1

@@ -1,0 +1,21 @@
+#Converts a Date to Epoch time
+#Useful when doing date/time arithmetic and comparisons
+#Usage: see usage function 
+#
+usage()
+{
+  echo "Usage: toepoch date"
+  echo "Converts date to 'epoch' time"
+  echo "ex. toepoch \"Jan 1 2015 20:1:1\" "
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+date -d "$1" +"%s"

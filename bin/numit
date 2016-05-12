@@ -1,0 +1,40 @@
+# Numbers the fields in an output. Useful when you want to 
+# capture a particular field in a long log line. Instead 
+# of counting manually or doing a trail and error you could 
+# use this script quickly to get the number(s) of the fields you want to process.
+#
+#Usage: <input> | numit  [field_separator]
+#
+# Ex:
+# cat file1 | numit  
+#
+# cat file1 | numit :
+#   (field separated by ':')
+#
+lastline=`tail -1 -`
+
+if [ $# -ge 1 ]
+then
+  tot=`echo $lastline | awk -F${1} '{print NF}'`
+else
+  tot=`echo $lastline | awk '{print NF}'`
+fi
+
+echo $lastline
+
+n=1
+while [ $n -le $tot ]
+do
+
+if [ $# -ge 1 ]
+then
+  x=`echo $lastline | awk -F${1} '{print $'''$n''' }'`
+  echo "$x -> $n"
+else
+  x=`echo $lastline | awk '{print $'''$n''' }'`
+  echo "$x -> $n"
+fi
+
+n=`expr $n + 1`
+done
+

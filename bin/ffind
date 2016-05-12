@@ -1,0 +1,20 @@
+#Find a file under the current directory recursively
+#
+#Usage: see usage function
+#
+usage()
+{
+  echo "Usage: ffind filename"
+  echo "Finds location of filename. Recursively searching all subdirectories"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+find . -name "$1" -print

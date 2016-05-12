@@ -1,0 +1,95 @@
+# Check for IPv6 address format
+#
+# 8 group  
+# Each rep a hexadecimal value or empty; 
+# Consecutive sections of zeroes are replaced with a double colon (::)
+#    (chk: 7 ‘:’ or if less than 7’:’ at least one double colon '::' shd be present)
+# Each group is Hex number (16 bit value between 0 - 65535)
+#    (chk: after tr : to space add 0x,  tip: convert using $((hex)) check 0-65535
+# Each contains 0-4 characters 
+#    (chk: 0-9, A-Z, a-z or just check for a valid number)
+#
+#Usage: see usage function
+#
+
+usage()
+{
+  echo "Usage: isip6 ipv6_address"
+  echo "Return 0 if its a valid and 1 if its invalid"
+  echo ""
+}
+
+#MAIN
+
+if [ $# -lt 1 ]
+then
+  usage
+  exit
+fi
+
+#if [ $1 -eq 0 ]
+#then
+#echo in if
+#exit
+#fi
+#
+todec()
+{
+dec_n=$((0x$1))
+echo $dec_n
+}
+
+f_isip6()
+{
+
+tot_colons=`echo $1 | awk -F: '{print NF}'`
+
+# Cannot have more than 7 colons
+if [ $tot_colons -gt 7 ]
+then
+ echo 1
+ exit 1
+fi
+
+# If less than 7 make sure at least one double colon present
+if [ $tot_colons -lt 7 ]
+then
+
+  echo $1 | grep "::" > /dev/null
+  if [ $? -ne 0 ]
+  then
+    echo 1
+    exit 1
+  fi
+
+fi
+
+trd=`echo $1 | tr ":" " "`
+
+# Check if each word is a number between 0 and 65535 after converting hex to dec
+for grp in $trd
+do
+
+dec_num=`todec $grp 2> /dev/null`
+#echo $? status for $grp
+if [ $? -ne 0 ]
+then
+  echo 1
+  exit 1
+fi
+
+if [ $dec_num -ge 0 -a $dec_num -le 65535 ]
+then 
+  continue 
+else
+  echo 1
+  exit 1
+fi
+
+done
+
+echo 0
+exit 0
+}
+
+f_isip6 $1
