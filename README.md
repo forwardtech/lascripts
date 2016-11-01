@@ -2,9 +2,9 @@
 Shell Scripts Library for Log Analysis
 --------------------------------------
 
-This contains commonly used utilities for doing general Log Analysis.  Comes 
-in handy when doing operations and processing large logs files for troubleshooting 
-and monitoring for general application systems, network and security shooting.  
+This contains commonly used utilities for general Log Analysis.  Comes 
+in handy when doing operations and processing large logs files. Useful for troubleshooting 
+and monitoring general application systems, network and security trouble shooting.  
 
 Note: This is a on going project. Please report issues, suggestions and your general comments
 
